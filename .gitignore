@@ -1,3 +1,21 @@
+.env
+env
+env.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+.env
+.env.development
+.env.test
+.env.production
+
+# Production
+.env.production
+
+
+
 # Logs
 logs
 *.log
