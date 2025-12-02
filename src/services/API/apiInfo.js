@@ -1,9 +1,19 @@
-const API_INFO = {
-    baseURL: `${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/api` || "http://localhost:3000/api",
-    timeout: import.meta.env.VITE_API_TIMEOUT || 5000, // default value? if none then 5 seconds timeout
-    headers: {
-        "Content-Type": "application/json",
-    },
-};
+// src/services/API/apiInfo.js
+export const API_BASE =
+    `${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/api`;
 
-export default API_INFO;
+export const API_TIMEOUT =
+    Number(import.meta.env.VITE_API_TIMEOUT || 5000);
+
+// Auth endpoints
+export const LOGIN_ENDPOINT = "/auth/login";
+export const REGISTER_ENDPOINT = "/auth/register";
+export const LOGOUT_ENDPOINT = "/auth/logout";
+export const ME_ENDPOINT = "/auth/me";
+export const CSRF_ENDPOINT = "/auth/csrf-token";
+
+export default {
+    baseURL: API_BASE,
+    timeout: API_TIMEOUT,
+    headers: { "Content-Type": "application/json" },
+};

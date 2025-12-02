@@ -1,17 +1,24 @@
-import { axiosInstance } from "./axiosConfig";
-import { toast } from "sonner";
+// src/services/API/deleteApi.js
+import { axiosInstance } from './axiosConfig';
+import { toast } from 'sonner';
 
-
-async function deleteApi(path, parameters) {
-    let response;
+export default async function deleteApi(path, parameters = {}) {
     try {
-        response = await axiosInstance.delete(path, { ...parameters });
+        return await axiosInstance.delete(path, parameters);
     } catch (err) {
         console.error(err);
-        toast.error(err.response?.data?.message || "An error occurred.");
-        response = err;
-    }
-    return response;
-}
 
-export default deleteApi;
+        const message =
+            err?.response?.data?.message ||
+            (err.request ? 'Network error. Please try again.' : 'Unexpected error.');
+
+        toast.error(message);
+
+        return (
+            err?.response ?? {
+                status: 500,
+                data: { message },
+            }
+        );
+    }
+}

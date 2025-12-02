@@ -2,6 +2,7 @@ import React, { useEffect, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@components/Navbar/Navbar';
 import { Button } from '@components/ui/button';
+import Loading from '@/components/Loading';
 
 // Enhanced Animated Section Component with Parallax
 function AnimatedSection({ children, className = "", delay = 0, parallax = false, speed = 0.5 }) {
@@ -168,14 +169,7 @@ export default function Homepage() {
     const scrollProgress = scrollY / (document.documentElement.scrollHeight - window.innerHeight);
 
     if (!isLoaded) {
-        return (
-            <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
-                <div className="text-center">
-                    <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-muted-foreground">Loading TutorOps...</p>
-                </div>
-            </div>
-        );
+        return <Loading />;
     }
 
     return (

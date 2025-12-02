@@ -1,17 +1,21 @@
-import { axiosInstance } from "./axiosConfig";
+// src/services/API/getApi.js
+import { axiosInstance } from './axiosConfig';
 
-async function getApi(path, parameters = {}) {
+export default async function getApi(path, parameters = {}) {
     try {
-        const response = await axiosInstance.get(path, {
+        return await axiosInstance.get(path, {
             ...parameters,
-            responseType: parameters.responseType || "json", // ✅ Default to JSON, but allow "blob"
+            responseType: parameters.responseType || 'json',
         });
-
-        return response;
     } catch (err) {
         console.error(err);
-        return err.response;
+
+        // Return axios-like structure even on network errors
+        return (
+            err?.response ?? {
+                status: 500,
+                data: { message: 'Network error. Please try again.' },
+            }
+        );
     }
 }
-
-export default getApi;

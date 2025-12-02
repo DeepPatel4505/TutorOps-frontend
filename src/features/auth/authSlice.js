@@ -1,31 +1,34 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     isAuthenticated: false,
     user: null,
-    accesstoken: null,
+    loadingUser: true,
     loading: false,
     error: null,
 };
 
 const authSlice = createSlice({
-    name: "auth",
+    name: 'auth',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
             // login user
             .addCase('auth/login/pending', (state) => {
+                console.log('Login pending');
                 state.loading = true;
                 state.error = null;
             })
             .addCase('auth/login/fulfilled', (state, action) => {
+                console.log('Login fulfilled');
+                console.log(action.payload.user);
                 state.loading = false;
                 state.isAuthenticated = true;
                 state.user = action.payload.user;
-                state.accesstoken = action.payload.accesstoken;
             })
             .addCase('auth/login/rejected', (state, action) => {
+                console.log('Login rejected');
                 state.loading = false;
                 state.error = action.payload;
             })
@@ -51,14 +54,28 @@ const authSlice = createSlice({
             })
             .addCase('auth/logout/fulfilled', (state) => {
                 state.isAuthenticated = false;
-                state.user = null;
-                state.accesstoken = null;
+                state.user = null;;
                 state.loading = false;
                 state.error = null;
             })
             .addCase('auth/logout/rejected', (state, action) => {
                 state.error = action.payload;
                 state.loading = false;
+            })
+
+            //load user
+            .addCase('auth/loadUser/pending', (state) => {
+                state.loadingUser = true;
+            })
+            .addCase('auth/loadUser/fulfilled', (state, action) => {
+                state.loadingUser = false;
+                state.isAuthenticated = true;
+                state.user = action.payload.user;
+            })
+            .addCase('auth/loadUser/rejected', (state) => {
+                state.loadingUser = false;
+                state.isAuthenticated = false;
+                state.user = null;
             });
     },
 });

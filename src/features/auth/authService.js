@@ -1,27 +1,29 @@
-import axios from "axios";
+import getApi from "@/services/API/getApi";
+import postApi from "@/services/API/postApi";
 
-const API_URL = "/api/users/";
+
+const API_URL = "/auth/";   
 
 // Register user
-const register = async (userData) => {
-    const response = await axios.post(API_URL + "register", userData);
+export const register = async (userData) => {
+    const response = await postApi(API_URL + "register", userData);
     return response.data;
 };
 
 // Login user
-const login = async (userData) => {
-    const response = await axios.post(API_URL + "login", userData);
+export const login = async (userData) => {
+    const response = await postApi(API_URL + "login", userData);
     return response.data;
-}
+};
 
 // Logout user
-const logout = async () => {
-    const response = await axios.post(API_URL + "logout");
-    return response.data;
-}
+export const logout = async () => {
+    const response = await postApi(API_URL + "logout");
+    return response;
+};
 
-export const authService = {
-    login,
-    logout,
-    register,
+// load user
+export const load_user = async () => {
+    const response = await getApi(API_URL + "me");
+    return response.data;
 };

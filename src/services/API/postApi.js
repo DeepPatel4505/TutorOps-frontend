@@ -1,16 +1,21 @@
-import { axiosInstance } from "./axiosConfig";
-import { toast } from "sonner";
+// src/services/API/postApi.js
+import { axiosInstance } from './axiosConfig';
+import { toast } from 'sonner';
 
-async function postApi(path, body, parameters = {}) {
-    let response;
+export default async function postApi(path, body = {}, parameters = {}) {
     try {
-        response = await axiosInstance.post(path, body, { ...parameters });
+        const response = await axiosInstance.post(path, body, parameters);
+        return response;
     } catch (err) {
         console.error(err);
-        toast.error(err.response?.data?.message || "An error occurred.");
-        response = err;
-    }
-    return response;
-}
 
-export default postApi;
+        const message =
+            err?.response?.data?.message ||
+            (err.request ? 'Network error. Please try again.' : 'Unexpected error.');
+
+        toast.error(message);
+
+        // Always return err.response so caller gets expected axios response shape
+        return err?.response ?? { status: 500, data: { message } };
+    }
+}

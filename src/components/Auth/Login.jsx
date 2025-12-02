@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@components/ui/button';
 import { GoogleIcon } from '@components/icons/GoogleIcon';
@@ -7,9 +7,16 @@ import { Eye, EyeOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ThemeToggle } from '@components/ThemeToggle';
 
-const Login = ({handleLogin, handleGoogleSignIn}) => {
+const Login = ({ handleLogin, handleGoogleSignIn }) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const { showPassword, toggleShowPassword } = useShowPassword();
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        handleLogin(email, password);
+    };
 
     return (
         <div className="min-h-dvh bg-background text-foreground antialiased selection:bg-primary/20 selection:text-foreground relative overflow-hidden">
@@ -58,6 +65,8 @@ const Login = ({handleLogin, handleGoogleSignIn}) => {
                                     autoComplete="email"
                                     placeholder="name@example.com"
                                     className="w-full rounded-[calc(var(--radius)-2px)] bg-background px-3 py-2 text-sm outline-none placeholder:text-muted-foreground/70 border border-input focus-visible:ring-2 focus-visible:ring-[color:var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--background)] transition-shadow"
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
                                 />
                             </div>
 
@@ -77,6 +86,8 @@ const Login = ({handleLogin, handleGoogleSignIn}) => {
                                         autoComplete="current-password"
                                         placeholder="••••••••"
                                         className="w-full rounded-[calc(var(--radius)-2px)] bg-background pl-3 pr-10 py-2 text-sm outline-none placeholder:text-muted-foreground/70 border border-input focus-visible:ring-2 focus-visible:ring-[color:var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--background)] transition-shadow"
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        value={password}
                                     />
                                     <button
                                         type="button"
@@ -104,9 +115,9 @@ const Login = ({handleLogin, handleGoogleSignIn}) => {
                                 </button>
                             </div>
 
-                            <Button 
+                            <Button
                                 className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20"
-                                onClick={handleLogin}
+                                onClick={onSubmit}
                             >
                                 Sign in
                             </Button>
